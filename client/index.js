@@ -29,7 +29,22 @@ async function loadTodos() {
       }
       newRow.appendChild(completedData);
 
+      const updateTD = document.createElement("td");
+      const updateButton = document.createElement("button");
+      updateButton.textContent = "Edit";
+      updateButton.onclick = () => {
+        fetch("http://localhost:8000/todo/update", {
+          method: "DELETE",
+          body: JSON.stringify({ ids: [todo.todo_id]}),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      }
+      updateTD.appendChild(updateButton);
+      newRow.appendChild(updateTD);
 
+      const deleteTD = document.createElement("td");
       const deleteButton = document.createElement("button");
       deleteButton.textContent = "Delete";
       deleteButton.onclick = () => {
@@ -40,13 +55,15 @@ async function loadTodos() {
             "Content-Type": "application/json",
           },
         });
+
+        location.reload();
       }
+      deleteTD.appendChild(deleteButton);
+      newRow.appendChild(deleteTD);
 
-
-      newRow.appendChild(deleteButton);
       list.appendChild(newRow);
     })
-}
+};
 
 function registerAddTodoHandler() {
   const form = document.getElementById("AddTodo");
