@@ -8,7 +8,7 @@ function createConnectionPromise() {
     type: "postgres",
     url: process.env.DATABASE_URL,
     host: process.env.DB_HOST || "localhost",
-    username: process.env.DB_USER || "username",
+    username: process.env.DB_USER || "jshau",
     password: process.env.DB_PASSWORD || "password",
     synchronize: true,
     database: process.env.DB_NAME || "todolist",

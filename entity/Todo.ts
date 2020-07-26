@@ -22,6 +22,6 @@ export class ToDo {
   public duedate: Date;
 
   @ManyToOne((type) => Project, (owner) => owner.id)
-  public todo: Project;
+  public project: Project;
 }
 export default ToDo;

@@ -9,6 +9,8 @@ class Routes {
   public routes(app): void {
     app.route("/todos").get(this.controller.getAllToDos);
     app.route("/todo/new").post(this.controller.newTodo);
+    app.route("/todo/delete").delete(this.controller.deleteTodo);
+    // app.route("/todo/update").post(this.controller.newTodo);
 
     // following code is to handle http://localhost:3000/superHero request.
     // app.route("/ToDo");

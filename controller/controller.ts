@@ -34,15 +34,13 @@ class Controller {
   // Generates a response to the frontend
   public async getAllToDos(req: Request, res: Response) {
     const connection = await connectionPromise;
-    connection
+    const todos = await connection
       .createQueryBuilder()
-      .select("")
-      .from(ToDo)
-      .values(req.todos)
+      .select("todo")
+      .from(ToDo, "todo")
       .execute();
-    res.send({
-      data: [{ task: "Finish Project", id: "testid123", done: false }],
-    });
+    console.log(todos)
+    res.send({todos});
   }
 
   //  {"todos":[{"task":"Finish Project","id":"testid123","done":false}]}
@@ -50,15 +48,40 @@ class Controller {
   //https://chrome.google.com/webstore/detail/postman-interceptor/aicmkgpgakddgnaphhhpliifpcfhicfo?hl=en
   //https://typeorm.io/#/insert-query-builder
   public async newTodo(req: Request, res: Response) {
-    console.log("new todo request", req.body);
-    // const connection = await connectionPromise;
-    // connection
-    //   .createQueryBuilder()
-    //   .insert()
-    //   .into(ToDo)
-    //   .values(req.todos)
-    //   .execute();
+    const connection = await connectionPromise;
+    connection
+      .createQueryBuilder()
+      .insert()
+      .into(ToDo)
+      .values(req.body.todos)
+      .execute();
     res.send({ message: "TODO ADDED" });
+  }
+
+  public async updateTodo(req: Request, res: Response) {
+    const connection = await connectionPromise;
+
+    connection
+      .createQueryBuilder()
+      .update(ToDo)
+      .set({task: req.body.todo.task, completed: req.body.todo.completed})
+      .where("id= :id", {id: req.body.todo.id} )
+      .execute();
+    res.send({ message: "TODO ADDED" });
+  }
+
+  public async deleteTodo(req: Request, res: Response) {
+    const connection = await connectionPromise;
+    console.log(req.body)
+    console.log(req.body.ids)
+    connection
+      .createQueryBuilder()
+      .delete()
+      .from(ToDo)
+      .where("id IN(:...ids)", { ids: req.body.ids})
+      .execute();
+    console.log("deleteing")
+    res.send('');
   }
 }
 //         superHero.name = requestSuperHero.name;
